@@ -1,4 +1,5 @@
 import os
+from exceptions.exceptions import FileManagerError
 
 class FileManager:
     def __init__(self, file_name):
@@ -8,10 +9,16 @@ class FileManager:
         self.file_path = os.path.join(resources_directory, file_name)
 
     def read_data(self):
-        with open(self.file_path, 'r') as file:
-            content = file.read()
-        return content
+        try:
+            with open(self.file_path, 'r') as file:
+                content = file.read()
+            return content
+        except OSError as e:
+            raise FileManagerError(self.file_path, e.strerror)
 
     def write_data(self, data):
-        with open(self.file_path, 'w') as file:
-            file.write(data)
+        try:
+            with open(self.file_path, 'w') as file:
+                file.write(data)
+        except OSError as e:
+            raise FileManagerError(self.file_path, e.strerror)
