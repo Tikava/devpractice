@@ -9,9 +9,9 @@ class FileManager:
 
     def read_data(self):
         with open(self.file_path, 'r') as file:
-            lines = file.readlines()
-        return lines
+            content = file.read()
+        return content
 
-    def write_data(self, lines):
+    def write_data(self, data):
         with open(self.file_path, 'w') as file:
-            file.writelines(lines)
+            file.write(data)
