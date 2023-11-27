@@ -7,3 +7,6 @@ class FileManagerError(OSError):
         
 class InvalidTaskError(Exception):
     pass
+
+class TaskNotFoundError(Exception):
+    pass
