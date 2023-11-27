@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a simple task manager implemented in Python. It allows users to add, update, remove, and view tasks.
+This project is a simple task manager implemented in Python. It allows users to add, update, remove, and view tasks. It also includes custom exceptions to handle various error scenarios.
 
 ## Classes
 
@@ -16,11 +16,21 @@ The `FileManager` class manages reading and writing data to a file. It provides 
 
 ### TaskList
 
-The `TaskList` class manages a list of tasks. It uses a `FileManager` to save the tasks to a file. It provides methods to add a task (`add_task`), get all tasks (`get_tasks`), get a specific task by title (`get_task`), and remove a task by title (`remove_task`).
+The `TaskList` class manages a list of tasks. It uses a `FileManager` to save the tasks to a file. It provides methods to add a task (`add_task`), get all tasks (`get_tasks`), get a specific task by title (`get_task`), and remove a task by title (`remove_task`). It raises an `InvalidTaskError` if a task is not valid, and a `TaskNotFoundError` if a task is not found.
 
 ### TaskManagerUI
 
 The `TaskManagerUI` class provides a command-line interface for managing tasks. It uses a `TaskList` to manage the tasks. It provides a `start` method that starts the user interface and handles user input. It also provides methods to add a task (`add_task`), update a task (`update_task`), remove a task (`remove_task`), and show all tasks (`show_tasks`).
+
+## Exceptions
+
+### InvalidTaskError
+
+The `InvalidTaskError` is a custom exception that is raised when a task is not valid. It inherits from the built-in `Exception` class and takes a message as an argument.
+
+### TaskNotFoundError
+
+The `TaskNotFoundError` is a custom exception that is raised when a task with a given title is not found in the task list. It inherits from the built-in `Exception` class and takes the title of the task as an argument.
 
 ## Usage
 
