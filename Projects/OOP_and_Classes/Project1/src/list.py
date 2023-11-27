@@ -1,7 +1,7 @@
 from .file_manager import FileManager
 import json
 from .task import Task
-from exceptions.exceptions import InvalidTaskError
+from exceptions.exceptions import InvalidTaskError, TaskNotFoundError
 
 class TaskList:
     
@@ -31,12 +31,16 @@ class TaskList:
         for task in tasks:
             if task.get_title() == task_title:
                 return task
-        return None
+        raise TaskNotFoundError(f"A task with title {task_title} was not found.")
     
     def remove_task(self, task_title):
         if not isinstance(task_title, str):
             raise ValueError("The task title must be a string")
         
         tasks = self.get_tasks()
-        updated_tasks = [task for task in tasks if task.get_title() != task_title]
-        self.file_manager.write_data(json.dumps(updated_tasks))
+        task = self.get_task(task_title)
+        if task:
+            updated_tasks = [task for task in tasks if task.get_title() != task_title]
+            self.file_manager.write_data(json.dumps(updated_tasks))
+        else:
+            raise TaskNotFoundError(f"A task with title {task_title} was not found.")
