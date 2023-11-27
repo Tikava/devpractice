@@ -1,5 +1,4 @@
 class Task:
-    
     def __init__(self, title, description, date):
         self.title = title
         self.description = description
@@ -22,3 +21,9 @@ class Task:
 
     def get_date(self):
         return self.date
+    
+    def to_dict(self):
+        return {'title': self.title, 'description': self.description, 'date': self.date}
+    
+    def __str__(self):
+        return f"{{'title': '{self.title}', 'description': '{self.description}', 'date': '{self.date}'}}"
