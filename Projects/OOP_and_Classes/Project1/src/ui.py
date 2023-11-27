@@ -1,5 +1,6 @@
-from task import Task
+from .task import Task
 import time
+from exceptions.exceptions import InvalidTaskError
 
 class TaskManagerUI:
     def __init__(self, task_list):
@@ -35,14 +36,21 @@ class TaskManagerUI:
         task_title = input('Title: ')
         task_description = input('Short description: ')
         task_date = input('Date(YYYY-MM-DD): ')
-        if self.validate_task(task_title, task_description, task_date):
-            task = Task(task_title, task_description, task_date)
-            self.task_list.add_task(task)
-            print('Your task has been added')
-        else:
-            print('Invalid task details')
+        try:
+            if self.validate_task(task_title, task_description, task_date):
+                task = Task(task_title, task_description, task_date)
+                self.task_list.add_task(task)
+                print('Your task has been added')
+        except InvalidTaskError as e:
+            print(e)
+
 
     def update_task(self):
+        tasks = self.task_list.get_tasks()
+        if not tasks:
+            print('No tasks found. Please add a task first.')
+            return
+
         print('Below given list of tasks, to update a task from your list, enter the title of the task')
         self.show_tasks()
         task_title = input('Title: ')
@@ -53,35 +61,47 @@ class TaskManagerUI:
             new_task_description = input('Short description: ')
             new_task_date = input('Date(YYYY-MM-DD): ')
 
-            if self.validate_task(new_task_title, new_task_description, new_task_date):
-                self.task_list.remove_task(task_title)
+            try:
+                if self.validate_task(new_task_title, new_task_description, new_task_date):
+                    self.task_list.remove_task(task_title)
 
-                new_task = Task(new_task_title, new_task_description, new_task_date)
+                    new_task = Task(new_task_title, new_task_description, new_task_date)
 
-                self.task_list.add_task(new_task)
+                    self.task_list.add_task(new_task)
 
-                print('Your task has been updated')
-            else:
-                print('Invalid task details')
+                    print('Your task has been updated')
+            except InvalidTaskError as e:
+                print(e)
         else:
             print('Task not found')
 
+
     def validate_task(self, title, description, date):
         if not title or not description or not date:
-            return False
+            raise InvalidTaskError("Title, description, and date must not be empty")
         try:
             time.strptime(date, '%Y-%m-%d')
         except ValueError:
-            return False
+            raise InvalidTaskError("Date must be in the format YYYY-MM-DD")
         return True
 
 
     def remove_task(self):
+        tasks = self.task_list.get_tasks()
+        if not tasks:
+            print('No tasks found. Nothing to remove.')
+            return
+
         print('Below given list of tasks, to remove a task from your list, enter the title of the task')
         self.show_tasks()
         task_title = input('Title: ')
-        self.task_list.remove_task(task_title)
-        print('Your task has been removed')
+        task = self.task_list.get_task(task_title)
+        if task:
+            self.task_list.remove_task(task_title)
+            print('Your task has been removed')
+        else:
+            print('Task not found')
+
 
     def show_tasks(self):
         tasks = self.task_list.get_tasks()
