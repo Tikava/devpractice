@@ -33,5 +33,5 @@ Special thanks to the DevPractice instructors and mentors for their invaluable g
 
 ---
 
-Course information sourced from [DevPractice](https://devpractice.kz/#rec609503246).
+Course information sourced from [DevPractice](https://devpractice.kz/#rec673550887).
 
