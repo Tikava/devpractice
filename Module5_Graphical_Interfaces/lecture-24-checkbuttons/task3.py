@@ -6,7 +6,7 @@ def add_task():
     task_title = entry.get()
     if task_title:
         task_frame = tk.Frame(task_list_frame)
-        task_frame.pack(anchor='w', padx=5, pady=2)  # Adjust padx and pady as needed
+        task_frame.pack(anchor='w', padx=5, pady=2)
         
         task_label = tk.Label(task_frame, text=task_title, font=('TkDefaultFont', 12))
         task = {'title': task_label, 'done': tk.IntVar(value=0)}
