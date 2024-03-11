@@ -1,10 +1,9 @@
-from typing import Any
 from django.db.models import F
-from django.db.models.query import QuerySet
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 from .models import Question, Choice
 
@@ -13,11 +12,14 @@ class IndexView(generic.ListView):
     context_object_name = "latest_question_list"
     
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
-
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
+    
 class DetailView(generic.DetailView):
     model = Question
-    template_name = "polls/detail.html"    
+    template_name = "polls/detail.html"   
+    
+    def get_queryset(self):
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 class ResultsView(generic.DetailView):
     model = Question
